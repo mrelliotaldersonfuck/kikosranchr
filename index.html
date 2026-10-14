@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiko’s Ranch</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* ===== MARCA — ajuste aqui as cores da Kiko’s Ranch ===== */
+  :root{
+    --ouro:#C9A35B;          /* dourado da marca */
+    --fundo:#000000;         /* preto */
+    --cartao:#0E0E0E;
+    --borda:#232323;
+    --texto:#F5F1EA;
+    --texto-2:#A29D95;
+    --alta:#6FCF73;
+    --baixa:#F0614D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--fundo);color:var(--texto)}
+  body{
+    font-family:Inter,system-ui,sans-serif;min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(201,163,91,.08), transparent 60%),
+      var(--fundo);
+  }
+  .wrap{max-width:2400px;margin:0 auto;padding:22px 16px 20px}
+
+  /* Cabeçalho */
+  header{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"marca status hora";
+    align-items:center;gap:12px 16px;padding-bottom:16px;border-bottom:1px solid var(--borda)}
+  header .marca{grid-area:marca} header .hora{grid-area:hora} header .status{grid-area:status}
+  header .hora{padding-left:16px;border-left:1px solid var(--borda)}
+  .marca{display:flex;align-items:center;gap:14px}
+  .marca img{height:56px;width:auto;object-fit:contain}   /* logo ao lado do nome */
+  .marca h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:var(--ouro)}
+  .marca .nome{display:flex;align-items:center;gap:14px}
+  #bandeira{width:56px;height:40px;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+  body.tv #bandeira{width:68px;height:48px}
+  @media (max-width:520px){ .marca h1{font-size:20px;letter-spacing:.1em;white-space:nowrap} #bandeira{width:42px;height:30px} .marca img{height:44px} }
+  .marca small{display:block;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--texto-2);margin-top:2px}
+  .status{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;justify-content:flex-end;align-content:center}
+  .moeda{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--cartao);border:1px solid var(--borda);border-radius:12px;padding:8px 16px 9px;white-space:nowrap}
+  .moeda span{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-2)}
+  .moeda b{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:25px;line-height:1.1;letter-spacing:-.01em}
+  .moeda .var{display:inline-block;margin:0;font-size:12px;padding:1px 7px;letter-spacing:0;text-transform:none}
+  .moeda .aa{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--texto-2);letter-spacing:0;text-transform:none;padding:1px 0}
+  .moeda.taxa b{color:var(--ouro)}
+  .hora{font-size:12px;color:var(--texto-2);text-align:right;line-height:1.5}
+  .hora .hh{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:34px;line-height:1;color:var(--texto);letter-spacing:.02em}
+  .hora .hh small{font-size:18px;color:var(--texto-2);margin-left:2px}
+  .hora .dia{font-size:13px;color:var(--ouro);margin:5px 0 3px;letter-spacing:.04em}
+  .hora .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--alta);margin-right:6px;
+    box-shadow:0 0 0 0 rgba(111,207,115,.6);animation:pulse 2s infinite}
+  .hora .dot.off{background:var(--baixa);animation:none}
+  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(111,207,115,0)}100%{box-shadow:0 0 0 0 rgba(111,207,115,0)}}
+
+  /* Destaque */
+  .destaque{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;margin:16px 0 14px}
+  .hero{background:linear-gradient(145deg,#17130B,#070707 70%);border:1px solid #2E2717;border-radius:18px;padding:22px 24px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;
+    border:1px solid rgba(201,163,91,.18)}
+  .rotulo{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+  .hero h2{font-family:Fraunces,Georgia,serif;font-size:30px;font-weight:500;margin:6px 0 2px}
+  .hero .preco{font-family:"JetBrains Mono",monospace;font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.1;margin-top:14px}
+  .hero .un{font-size:14px;color:var(--texto-2);margin-top:4px}
+  .hero{display:flex;flex-direction:column}
+  .hero .graf{flex:1;min-height:110px;margin-top:14px;position:relative}
+  .hero canvas{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;display:block}
+  
+
+  /* Grade */
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+  @media (min-width:900px){ .grade{grid-template-columns:repeat(4,minmax(0,1fr))} .card.etanol{grid-column:3;grid-row:1 / span 2} .card.b3{grid-column:4;grid-row:1 / span 2} }
+  .card{background:var(--cartao);border:1px solid var(--borda);border-radius:16px;padding:15px 16px;transition:border-color .2s,transform .2s}
+  .card:hover{border-color:rgba(201,163,91,.55);transform:translateY(-2px)}
+  .card .topo>div{min-width:0}
+  .card .topo{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .card h3{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:22px}
+  .card .bolsa{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--texto-2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .preco{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:31px;margin-top:10px}
+  .card .un{font-size:14px;color:var(--texto-2)}
+  .card .conv{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--texto-2);margin-top:3px}
+  .card .valor-l{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .card .prox{display:flex;gap:14px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--texto-2);margin-top:8px}
+  .card .prox b{color:var(--texto);font-weight:500;margin-left:4px}
+  .card .orig{font-size:13px;color:var(--texto-2);margin-top:8px;font-family:"JetBrains Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card canvas{width:100%;height:42px;margin-top:10px;display:block}
+  .orig .vivo{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--alta);margin-right:7px;vertical-align:middle;
+    box-shadow:0 0 0 0 rgba(111,207,115,.6);animation:pulse 2s infinite}
+  body.tv .orig .vivo{width:11px;height:11px}
+  .card:not(.etanol):not(.b3){display:flex;flex-direction:column}
+  .card .spark{position:relative;flex:1 1 42px;min-height:42px;margin-top:10px}
+  .card .spark canvas, body.tv .card .spark canvas{position:absolute;top:0;left:0;width:100%;height:100%;margin:0}
+  .var{font-family:"JetBrains Mono",monospace;font-size:14px;padding:4px 8px;border-radius:8px;white-space:nowrap}
+  .var.up{color:var(--alta);background:rgba(111,207,115,.12)}
+  .var.down{color:var(--baixa);background:rgba(240,97,77,.12)}
+  .var.flat{color:var(--texto-2);background:rgba(142,138,131,.12)}
+  .erro{color:var(--baixa);font-size:13px;margin-top:14px}
+  .skel{background:linear-gradient(90deg,#111,#1C1C1C,#111);background-size:200% 100%;animation:sk 1.4s infinite;border-radius:8px;height:1em}
+  @keyframes sk{to{background-position:-200% 0}}
+
+  /* Etanol: 3 indicadores CEPEA num card largo */
+  .card.etanol{display:flex;flex-direction:column}
+  .et-lista{display:grid;gap:0;margin-top:8px;flex:1;align-content:space-between}
+  .et{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"n v" "p p" "g g";align-items:center;column-gap:10px;row-gap:2px;
+    padding:8px 0;border-top:1px solid #1C1C1C}
+  .et:first-child{border-top:0;padding-top:2px}
+  .et .n{grid-area:n} .et .p{grid-area:p} .et canvas{grid-area:g} .et .var{grid-area:v;justify-self:end}
+  .et .n{font-size:16px;line-height:1.2}
+  .et .n small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--texto-2);margin-top:2px}
+  .et .p{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:27px;white-space:nowrap}
+  .et .p span{font-size:11px;color:var(--texto-2);margin-left:4px}
+  .et canvas{width:100%;height:34px;margin:4px 0 0}
+  @media (max-width:899px){ .et canvas{display:none} }
+
+  /* Card rotativo: futuros B3 */
+  .card.b3{display:flex;flex-direction:column;background:linear-gradient(160deg,#141109,#0B0B0B 60%);border-color:#2E2717;position:relative;overflow:hidden}
+  .b3 .tag{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+  .b3 .slide{display:flex;flex-direction:column;flex:1;min-height:0;transition:opacity .45s ease, transform .45s ease}
+  .b3 .slide.sai{opacity:0;transform:translateY(6px)}
+  .b3 h3{margin-top:8px}
+  .b3 .sigla{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--texto-2);margin-left:6px;letter-spacing:.08em}
+  .b3 .preco{font-size:33px}
+  .b3 .valor{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 10px;margin-top:10px}
+  .b3 .valor .preco{margin-top:0}
+  .b3 .conv{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--texto-2);margin-top:3px}
+  .b3 .graf{position:relative;flex:1 1 56px;min-height:56px;margin-top:10px}
+  .b3 .graf canvas{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0}
+  .b3 .vencs{margin-top:10px;display:grid;gap:4px;align-content:start}
+  .b3 .v{display:grid;grid-template-columns:60px 1fr auto;gap:8px;align-items:center;font-family:"JetBrains Mono",monospace;font-size:14px;
+    padding:4px 0;border-top:1px solid #1C1C1C}
+  .b3 .v .m{color:var(--texto-2)} .b3 .v .x{text-align:right}
+  .b3 .v .var{font-size:12px;padding:2px 6px}
+  .b3 .pontos{display:flex;gap:6px;justify-content:center;margin-top:10px}
+  .b3 .pontos i{width:6px;height:6px;border-radius:50%;background:#2A2A2A;transition:background .3s,width .3s}
+  .b3 .pontos i.on{background:var(--ouro);width:16px;border-radius:4px}
+  .b3 .barra-tempo{position:absolute;left:0;bottom:0;height:2px;background:var(--ouro);opacity:.5;width:0}
+  .b3 .barra-tempo.anda{width:100%;transition:width linear}
+  @media (prefers-reduced-motion: reduce){ .b3 .slide{transition:none} .b3 .barra-tempo{display:none} }
+
+  /* Boi gordo por estado */
+  .estados{background:var(--cartao);border:1px solid var(--borda);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column}
+  .estados .cab{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+  .estados h3{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:20px}
+  .estados .sub{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--texto-2);margin-top:3px}
+  .estados .media{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--texto-2);text-align:right}
+  .estados .media b{color:var(--ouro);font-weight:500;font-size:16px}
+  .uf-lista{display:grid;grid-template-columns:1fr;row-gap:5px}
+  .uf{display:grid;grid-template-columns:40px 1fr 88px 58px 74px;align-items:center;gap:10px;height:30px}
+  .uf .sigla{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:13px;color:var(--fundo);background:var(--ouro);
+    border-radius:6px;text-align:center;padding:4px 0}
+  .uf .trilho{height:8px;background:#1A1A1A;border-radius:99px;overflow:hidden}
+  .uf .barra{height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(201,163,91,.35),var(--ouro))}
+  .uf .p{font-family:"JetBrains Mono",monospace;font-size:15px;text-align:right}
+  .uf .dif{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--texto-2);text-align:right}
+  .uf .var{text-align:center;font-size:12px}
+  .uf.topo .sigla{box-shadow:0 0 0 2px rgba(201,163,91,.35)}
+  @media (max-width:900px){ .estados .media{text-align:left} }
+  .estados .leg{font-size:10.5px;color:var(--texto-2);margin-top:8px}
+  @media (max-width:520px){ .uf{grid-template-columns:40px 1fr 84px 64px} .uf .dif{display:none} }
+
+
+  footer{margin-top:14px;padding-top:10px;border-top:1px solid var(--borda);font-size:11px;color:var(--texto-2);
+    display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+  footer a{color:var(--ouro);text-decoration:none}
+
+  html.escalado, html.escalado body{overflow:hidden;height:100%}
+  #debug{position:fixed;left:8px;bottom:8px;z-index:9;background:#111;border:1px solid var(--ouro);color:var(--ouro);
+    font:13px/1.4 "JetBrains Mono",monospace;padding:6px 10px;border-radius:8px}
+
+  /* Modo TV: ?tv=1 */
+  body.tv .wrap{max-width:none;padding:1.6vh 1.6vw}
+  body.tv .marca img{height:64px}
+  body.tv .marca h1{font-size:32px;letter-spacing:.1em}
+  body.tv footer{display:none}
+  /* tipografia para ver de longe */
+  body.tv{--texto-2:#D0CAC0}
+  body.tv .so-pc{display:none} .so-pc{font-style:normal}                       /* cinza mais claro: legível de longe */
+  body.tv .card, body.tv .estados, body.tv .moeda{--borda:#2C2C2C}
+  body.tv .moeda{padding:8px 10px}
+  body.tv .status{gap:8px} body.tv header{column-gap:14px} body.tv .marca{gap:10px} body.tv .marca .nome{gap:10px}
+  body.tv .moeda span{font-size:17px}
+  body.tv .moeda b{font-size:34px;letter-spacing:-.03em}
+  body.tv .moeda .var, body.tv .moeda .aa{font-size:18px}
+  body.tv .hora .hh{font-size:60px} body.tv .hora .dia{font-size:22px;margin:3px 0 1px} body.tv .hora{font-size:17px;line-height:1.3}
+  body.tv .destaque{margin:12px 0 12px;gap:12px}
+  body.tv .rotulo{font-size:17px}
+  body.tv .hero h2{font-size:38px}
+  body.tv .hero .preco{font-size:96px}
+  body.tv .hero .un{font-size:22px}
+  body.tv .hero .graf{min-height:50px}
+  body.tv .hero .preco .var{font-size:26px !important;padding:4px 10px}
+  body.tv .estados h3{font-size:28px} body.tv .estados .sub{font-size:19px}
+  body.tv .estados .media{font-size:18px} body.tv .estados .media b{font-size:26px}
+  body.tv .estados .leg{display:none}
+  body.tv .uf{grid-template-columns:56px 1fr 128px 80px 104px;height:auto;gap:12px}
+  body.tv .uf .sigla{font-size:19px;padding:3px 0}
+  body.tv .uf .p{font-size:23px} body.tv .uf .dif{font-size:20px} body.tv .uf .var{font-size:18px}
+  body.tv .uf-lista{row-gap:6px}
+  body.tv .grade{gap:12px}
+  body.tv .card{padding:12px 16px}
+  body.tv .card h3{font-size:30px}
+  body.tv .card .bolsa{font-size:20px}
+  body.tv .card .preco{font-size:46px;margin-top:6px}
+  body.tv .card .un, body.tv .card .conv, body.tv .card .prox{font-size:22px}
+  body.tv .card .orig{font-size:20px;margin-top:6px}
+  body.tv .card canvas{height:26px;margin-top:6px}
+  body.tv .card .spark{flex-basis:26px;min-height:26px;margin-top:6px}
+  body.tv .var{font-size:19px;padding:3px 8px}
+  body.tv .et{padding:6px 0}
+  body.tv .et .n{font-size:22px} body.tv .et .n small{font-size:19px}
+  body.tv .et .p{font-size:38px}
+  body.tv .et canvas{height:20px}
+  body.tv .b3 .tag{font-size:20px} body.tv .b3 .sigla{font-size:19px}
+  body.tv .b3 .preco{font-size:48px} body.tv .b3 .valor{margin-top:6px}
+  body.tv .b3 .conv{font-size:22px}
+  body.tv .b3 .graf{flex-basis:40px;min-height:40px;margin-top:6px}
+  body.tv .b3 .graf canvas{height:100%;margin:0}
+  body.tv .b3 .vencs{margin-top:6px;gap:2px}
+  body.tv .b3 .v{grid-template-columns:96px 1fr auto;font-size:23px;padding:3px 0}
+  body.tv .b3 .v .var{font-size:17px}
+
+  @media (max-width:820px){
+    .destaque{grid-template-columns:1fr}
+    header{grid-template-columns:minmax(0,1fr);grid-template-areas:"marca" "hora" "status"}
+    header .hora{padding-left:0;border-left:0} .status{justify-content:flex-start}
+    .moeda b{font-size:24px}
+    .moeda{flex:1 1 40%}
+    .hora{text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="marca">
+      <img src="logo.svg" alt="Kiko’s Ranch">
+      <div>
+        <div class="nome"><h1>KIKO’S RANCH</h1><canvas id="bandeira" aria-label="Bandeira do Brasil" role="img"></canvas></div>
+      </div>
+    </div>
+    <div class="hora">
+      <div class="hh" id="relogio">--:--</div>
+      <div class="dia" id="hoje">—</div>
+      <div><span class="dot" id="dot"></span><span id="atual">a cada 15 min</span></div>
+    </div>
+    <div class="status">
+      <div class="moeda"><span>Dólar<i class="so-pc"> comercial</i></span><b id="usd">—</b><span id="usdVar" class="var flat">—</span></div>
+      <div class="moeda"><span>Euro</span><b id="eur">—</b><span id="eurVar" class="var flat">—</span></div>
+      <div class="moeda taxa" title="Taxa DI (B3), anualizada base 252 — fonte: Banco Central"><span>CDI</span><b id="cdi">—</b><span class="aa">a.a.</span></div>
+      <div class="moeda taxa" title="Meta da taxa Selic definida pelo Copom — fonte: Banco Central"><span>Selic</span><b id="selic">—</b><span class="aa">a.a.</span></div>
+      <div class="moeda"><span>Ibovespa</span><b id="ibov">—</b><span id="ibovVar" class="var flat">—</span></div>
+      <div class="moeda" title="Nasdaq Composite (EUA)"><span>Nasdaq</span><b id="nasdaq">—</b><span id="nasdaqVar" class="var flat">—</span></div>
+      <div class="moeda" title="S&amp;P 500 (EUA)"><span>S&amp;P 500</span><b id="sp500">—</b><span id="sp500Var" class="var flat">—</span></div>
+    </div>
+  </header>
+
+
+  <section class="destaque">
+    <div class="hero" id="hero">
+      <div class="rotulo">Destaque</div>
+      <h2 id="heroNome">Boi gordo</h2>
+      <div class="preco" id="heroPreco"><div class="skel" style="width:60%"></div></div>
+      <div class="un" id="heroUn">R$/@</div>
+      <div class="graf"><canvas id="heroGraf"></canvas></div>
+    </div>
+    <section class="estados" id="estados">
+      <div class="cab">
+        <div><h3>Boi gordo por estado</h3><div class="sub" id="estSub">Indicador do Boi · Datagro</div></div>
+        <div class="media">Média<br><b id="estMedia">—</b></div>
+      </div>
+      <div class="uf-lista" id="ufLista"></div>
+      <div class="leg">Do maior para o menor · cinza = diferença em R$/@ para a média · % = variação do dia</div>
+    </section>
+  </section>
+
+  <section class="grade" id="grade"></section>
+
+
+  <footer>
+    <div>Fontes: Datagro (boi e bezerro) · CEPEA/ESALQ (milho, soja, etanol) · ICE NY via Yahoo, ~15 min de atraso (açúcar VHP) · B3 (futuros) · Banco Central (CDI, Selic) · Yahoo Finance (câmbio, bolsas) · via Notícias Agrícolas · cada card mostra a data da última atualização.</div>
+    <div><a class="tv-link" href="?tv=1">Modo TV ↗</a></div>
+  </footer>
+</div>
+
+<script>
+const fmtBRL = (v, d=2) => v==null||isNaN(v) ? '—' : v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtVar = v => v==null||isNaN(v) ? '—' : (v>0?'▲ +':v<0?'▼ ':'')+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+const cls = v => v==null||Math.abs(v)<0.005 ? 'flat' : v>0 ? 'up' : 'down';
+const dm = (d) => d ? d.slice(0,5) : '—';            // dd/mm
+const pr = (i) => (i.prefixo ?? 'R$ ') + fmtBRL(i.preco, i.casas || 2);
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const params = new URLSearchParams(location.search);
+// Modo TV: automático em Smart TVs (Samsung Tizen, LG webOS, etc.) ou com ?tv=1; ?tv=0 desliga
+if (!Array.prototype.at) Array.prototype.at = function(n){ n = Math.trunc(n) || 0; if (n < 0) n += this.length; return this[n]; };
+const EH_TV = /SMART-TV|SmartTV|Tizen|Web0S|webOS|NetCast|HbbTV|BRAVIA|CrKey|GoogleTV|Android TV|AFT[A-Z]/i.test(navigator.userAgent);
+if (params.get('tv') === '1' || (EH_TV && params.get('tv') !== '0')) document.body.classList.add('tv');
+let ESCALA = 1;
+const DESTAQUE = params.get('destaque') || 'boi';
+
+function grafico(canvas, dados, cor, preenchido){
+  if(!canvas || !dados || dados.length<2) return;
+  const dpr = (window.devicePixelRatio||1) * ESCALA, w = canvas.clientWidth, h = canvas.clientHeight;
+  canvas.width = w*dpr; canvas.height = h*dpr;
+  const c = canvas.getContext('2d'); c.scale(dpr,dpr);
+  const min = Math.min(...dados), max = Math.max(...dados), r = (max-min)||1, p = 4;
+  const pts = dados.map((v,i)=>[i/(dados.length-1)*(w-5), h-p-(v-min)/r*(h-2*p)]);
+  c.beginPath(); pts.forEach(([x,y],i)=> i?c.lineTo(x,y):c.moveTo(x,y));
+  c.strokeStyle = cor; c.lineWidth = 2; c.lineJoin='round'; c.stroke();
+  if(preenchido){
+    c.lineTo(pts.at(-1)[0],h); c.lineTo(0,h); c.closePath();
+    const g = c.createLinearGradient(0,0,0,h); g.addColorStop(0,cor+'55'); g.addColorStop(1,cor+'00');
+    c.fillStyle = g; c.fill();
+  }
+  const [lx,ly] = pts.at(-1); c.beginPath(); c.arc(lx,ly,3.5,0,7); c.fillStyle=cor; c.fill();
+}
+const corDe = v => v==null ? cssVar('--ouro') : v>=0 ? cssVar('--alta') : cssVar('--baixa');
+
+function moeda(id, m){
+  if(!m) return;
+  document.getElementById(id).textContent = 'R$ ' + fmtBRL(m.preco, 4);
+  const v = document.getElementById(id+'Var'); v.textContent = fmtVar(m.variacao); v.className = 'var '+cls(m.variacao);
+}
+
+function render(d){
+  moeda('usd', d.dolar); moeda('eur', d.euro);
+  if (d.cdi)   document.getElementById('cdi').textContent   = fmtBRL(d.cdi.valor) + '%';
+  if (d.selic) document.getElementById('selic').textContent = fmtBRL(d.selic.valor) + '%';
+  for (const [id, x] of [['ibov', d.ibov], ['nasdaq', d.nasdaq], ['sp500', d.sp500]]) {
+    if (!x) continue;
+    document.getElementById(id).textContent = Math.round(x.preco).toLocaleString('pt-BR');
+    const v = document.getElementById(id+'Var'); v.textContent = fmtVar(x.variacao); v.className = 'var '+cls(x.variacao);
+  }
+  document.getElementById('dot').className = 'dot';
+  document.getElementById('atual').textContent = 'a cada 15 min · última ' + new Date(d.atualizado).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  const ok = d.itens.filter(i=>!i.erro);
+  const h = ok.find(i=>i.id===DESTAQUE) || ok[0];
+  if(h){
+    document.getElementById('heroNome').textContent = h.nome;
+    document.getElementById('heroPreco').innerHTML = pr(h) + ` <span class="var ${cls(h.variacao)}" style="font-size:16px;vertical-align:middle">${fmtVar(h.variacao)}</span>`;
+    document.getElementById('heroUn').textContent = `${h.unidade} · ${h.bolsa} · atualizado ${dm(h.dataRef)} · últimos ${h.historico?.length||0} fechamentos`;
+    grafico(document.getElementById('heroGraf'), h.historico, cssVar('--ouro'), true);
+  }
+
+
+  const ETN = ['etanol','outros','anidro'];
+  const etanois = ETN.map(id=>d.itens.find(i=>i.id===id)).filter(Boolean);
+  const NOMES = {etanol:['Hidratado','combustível'], outros:['Hidratado','outros fins'], anidro:['Anidro','combustível']};
+  const cardEtanol = !etanois.length ? '' : `
+    <article class="card etanol">
+      <div class="topo"><div><h3>Etanol</h3><div class="bolsa">CEPEA/ESALQ · semanal · R$/litro</div></div></div>
+      <div class="et-lista">${etanois.map(i=> i.erro ? `
+        <div class="et"><div class="n">${NOMES[i.id][0]}<small>${NOMES[i.id][1]}</small></div><div class="erro" style="margin:0">indisponível</div></div>` : `
+        <div class="et">
+          <div class="n">${NOMES[i.id][0]}<small>${NOMES[i.id][1]}</small></div>
+          <div class="p">${pr(i)}</div>
+          <canvas data-id="${i.id}"></canvas>
+          <span class="var ${cls(i.variacao)}">${fmtVar(i.variacao)}</span>
+        </div>`).join('')}
+      </div>
+      <div class="orig">${etanois[0]?.semana ? 'Semana '+etanois[0].semana+' · ' : ''}atualizado ${dm(etanois[0]?.dataRef)}</div>
+    </article>`;
+  const lista = d.itens.filter(i=>i!==h && !ETN.slice(1).includes(i.id));
+  const cardB3 = d.b3?.length ? `<article class="card b3" id="b3">
+      <div class="tag">Futuros B3</div>
+      <div class="slide" id="b3slide"></div>
+      <div class="pontos" id="b3pontos">${d.b3.map((_,k)=>`<i data-k="${k}"></i>`).join('')}</div>
+      <div class="barra-tempo" id="b3tempo"></div>
+    </article>` : '';
+  document.getElementById('grade').innerHTML = cardB3 + lista.map(i=> i.id==='etanol' ? cardEtanol : i.erro ? `
+    <article class="card"><div class="topo"><div><h3>${i.nome}</h3><div class="bolsa">${i.bolsa||''}</div></div></div>
+    <div class="erro">Cotação indisponível no momento.</div></article>` : `
+    <article class="card card-${i.id}">
+      <div class="topo"><div><h3>${i.nome}</h3><div class="bolsa">${i.bolsa}</div></div>
+        <span class="var ${cls(i.variacao)}">${fmtVar(i.variacao)}</span></div>
+      <div class="preco">${pr(i)}</div>
+      <div class="un">${i.unidade}</div>
+      ${i.conv ? `<div class="conv">${i.conv}</div>` : ''}
+      <div class="spark"><canvas data-id="${i.id}"></canvas></div>
+      ${i.proximos?.length ? `<div class="prox">${i.proximos.map(v=>`<span>${v.venc}<b>${i.prefixo ?? 'R$ '}${fmtBRL(v.preco)}</b></span>`).join('')}</div>` : ''}
+      <div class="orig">${i.aoVivo ? `<i class="vivo"></i>Ao vivo ${i.hora}` : `Atualizado ${dm(i.dataRef)}${i.hora ? ' '+i.hora : ''}`} · ${i.fonte||''}${i.orig ? ' · '+i.orig : ''}</div>
+    </article>`).join('');
+  d.itens.forEach(i=>{ if(!i.erro && i!==h) grafico(document.querySelector(`canvas[data-id="${i.id}"]`), i.historico, corDe(i.variacao), false); });
+
+  renderEstados(d.boiEstados);
+  iniciarB3(d.b3 || [], d.dolar?.preco);
+}
+
+// ---------- card rotativo dos futuros B3 ----------
+let b3Timer = null, b3Idx = 0;
+const B3_TEMPO = 8000;   // ms em cada contrato
+function slideB3(lista, usd){
+  const c = lista[b3Idx % lista.length]; if(!c) return;
+  const box = document.getElementById('b3slide'); if(!box) return;
+  const f = c.vencimentos[0];
+  const casas = c.casas || 2;
+  const moeda = c.semConversao && c.moeda==='USD' ? 'US$ ' : 'R$ ';
+  const conv = c.original || '';
+  box.innerHTML = `
+    <h3>${c.nome}<span class="sigla">${c.sigla}</span></h3>
+    <div class="bolsa">vencimento ${f.venc} · ${c.unidade}</div>
+    <div class="valor"><div class="preco">${moeda}${fmtBRL(f.preco, casas)}</div><span class="var ${cls(f.variacao)}">${fmtVar(f.variacao)}</span></div>
+    <div class="conv">${conv}&nbsp;</div>
+    <div class="graf"><canvas id="b3graf"></canvas></div>
+    <div class="vencs">${c.vencimentos.map(v=>`
+      <div class="v"><span class="m">${v.venc}</span><span class="x">${moeda}${fmtBRL(v.preco, casas)}</span><span class="var ${cls(v.variacao)}">${fmtVar(v.variacao)}</span></div>`).join('')}
+    </div>
+    <div class="orig">Fechamento ${dm(c.dataRef)} · B3</div>`;
+  grafico(document.getElementById('b3graf'), c.historico, cssVar('--ouro'), true);
+  document.querySelectorAll('#b3pontos i').forEach((p,k)=>p.classList.toggle('on', k===b3Idx % lista.length));
+  const t = document.getElementById('b3tempo');
+  if(t){ t.classList.remove('anda'); t.style.transitionDuration='0ms'; void t.offsetWidth;
+         t.style.transitionDuration = B3_TEMPO+'ms'; t.classList.add('anda'); }
+}
+function iniciarB3(lista, usd){
+  clearInterval(b3Timer);
+  if(!lista.length) return;
+  slideB3(lista, usd);
+  document.querySelectorAll('#b3pontos i').forEach(p=>p.onclick=()=>{ b3Idx = +p.dataset.k; iniciarB3(lista, usd); });
+  b3Timer = setInterval(()=>{
+    const box = document.getElementById('b3slide'); if(!box) return;
+    box.classList.add('sai');
+    setTimeout(()=>{ b3Idx++; slideB3(lista, usd); box.classList.remove('sai'); }, 450);
+  }, B3_TEMPO);
+}
+
+function renderEstados(b){
+  const box = document.getElementById('estados');
+  if(!b || b.erro || !b.estados?.length){ box.hidden = true; return; }
+  box.hidden = false;
+  const ps = b.estados.map(e=>e.preco), min = Math.min(...ps), max = Math.max(...ps), r = (max-min)||1;
+  const media = ps.reduce((a,v)=>a+v,0)/ps.length;
+  document.getElementById('estSub').textContent = `Datagro · ${b.unidade} · fechamento ${b.data.slice(0,5)}`;
+  document.getElementById('estMedia').textContent = 'R$ ' + fmtBRL(media);
+  const lista = document.getElementById('ufLista');
+  lista.innerHTML = b.estados.map((e,k)=>{
+    const dif = e.preco - media;
+    const larg = 18 + 82*(e.preco-min)/r;   // barra comparativa entre o menor e o maior estado
+    return `<div class="uf${k===0?' topo':''}" title="${e.uf}: R$ ${fmtBRL(e.preco)}">
+      <div class="sigla">${e.uf}</div>
+      <div class="trilho"><div class="barra" style="width:${larg.toFixed(1)}%"></div></div>
+      <div class="p">R$ ${fmtBRL(e.preco)}</div>
+      <div class="dif">${dif>=0?'+':'−'}${fmtBRL(Math.abs(dif))}</div>
+      <span class="var ${cls(e.variacao)}">${fmtVar(e.variacao)}</span>
+    </div>`;
+  }).join('');
+}
+
+// Bandeira do Brasil tremulando (desenhada em canvas, sem imagens externas)
+(function bandeira(){
+  const cv = document.getElementById('bandeira'); if(!cv) return;
+  const W = 240, H = 168, M = 12;                 // resolução interna (margem p/ a onda)
+  const src = document.createElement('canvas'); src.width = W; src.height = H;
+  const g = src.getContext('2d');
+  g.fillStyle = '#009C3B'; g.fillRect(0,0,W,H);                                   // verde
+  g.fillStyle = '#FFDF00'; g.beginPath();                                          // losango amarelo
+  g.moveTo(W*0.085,H/2); g.lineTo(W/2,H*0.12); g.lineTo(W*0.915,H/2); g.lineTo(W/2,H*0.88); g.closePath(); g.fill();
+  const cx=W/2, cy=H/2, r=H*0.25;
+  g.fillStyle = '#002776'; g.beginPath(); g.arc(cx,cy,r,0,7); g.fill();            // círculo azul
+  g.save(); g.beginPath(); g.arc(cx,cy,r,0,7); g.clip();                           // faixa branca
+  g.strokeStyle = '#fff'; g.lineWidth = r*0.16; g.beginPath(); g.arc(cx-r*0.45,cy+r*1.7,r*2.05,-Math.PI*0.62,-Math.PI*0.2); g.stroke();
+  g.fillStyle = '#fff';
+  [[.30,.62],[.45,.55],[.62,.66],[.38,.75],[.55,.80],[.70,.52],[.22,.48],[.50,.68],[.66,.80]].forEach(([x,y])=>{
+    g.beginPath(); g.arc(cx-r+2*r*x, cy-r+2*r*y, 2.2, 0, 7); g.fill(); });        // estrelas
+  g.restore();
+
+  const ctx = cv.getContext('2d');
+  const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // camada interna em resolução fixa: cada coluna de 1px é desenhada sem sobreposição
+  const out = document.createElement('canvas'); out.width = W + M*2; out.height = H + M*2;
+  const o = out.getContext('2d');
+  const K = Math.PI*2*1.15/W;           // ~1 onda visível ao longo da bandeira
+  const VEL = 0.0021;                   // velocidade (rad/ms) — balanço calmo
+  function quadro(t){
+    o.clearRect(0,0,out.width,out.height);
+    for(let x=0; x<W; x++){
+      const a = Math.pow(x/W, 0.85);                         // presa no mastro, solta na ponta
+      const f = x*K - t*VEL;
+      const onda = Math.sin(f) + 0.35*Math.sin(f*1.9 + 1.1);  // duas ondas = tecido mais natural
+      const dy = onda * 7 * a;
+      const prof = 1 + 0.045*a*Math.cos(f);                  // dobra mais "perto" fica maior
+      const h = H*prof, y = M + dy - (h-H)/2;
+      o.drawImage(src, x,0,1,H, M+x, y, 1.15, h);
+      const incl = Math.cos(f) + 0.66*Math.cos(f*1.9 + 1.1);  // inclinação da dobra → luz/sombra
+      const luz = incl*0.13*a;
+      o.fillStyle = luz>0 ? `rgba(255,255,255,${luz.toFixed(3)})` : `rgba(0,0,0,${(-luz*1.6).toFixed(3)})`;
+      o.fillRect(M+x, y, 1, h);
+    }
+    const dpr = (window.devicePixelRatio||1) * ESCALA;
+    const cw = Math.round(cv.clientWidth*dpr), ch = Math.round(cv.clientHeight*dpr);
+    if(cv.width!==cw || cv.height!==ch){ cv.width=cw; cv.height=ch; }
+    ctx.clearRect(0,0,cw,ch);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(out, 0,0,cw,ch);
+    if(!quieto) requestAnimationFrame(quadro);
+  }
+  requestAnimationFrame(quadro);
+})();
+
+// Encaixa a página inteira na altura da tela (telas largas/TV), reduzindo a escala por igual
+function encaixar(){
+  const w = document.querySelector('.wrap'), raiz = document.documentElement;
+  w.style.transform = ''; w.style.width = ''; w.style.marginLeft = ''; w.style.marginRight = '';
+  raiz.classList.remove('escalado'); ESCALA = 1;
+  if (innerWidth < 900) { debug(); return; }      // celular: rola normalmente
+  raiz.classList.add('escalado');
+  // escala por transform: mede a altura real do layout (offsetHeight não muda com a escala)
+  const tv = document.body.classList.contains('tv');
+  const maxW = tv ? Infinity : 2400;
+  const H = innerHeight - 4;
+  const alturaEm = (z) => { w.style.width = Math.min(maxW, innerWidth / z) + 'px'; return w.offsetHeight * z; };
+  let lo = 0.3, hi = tv ? 2.5 : 1.6;                   // pode ampliar em telas grandes
+  if (alturaEm(hi) <= H) lo = hi;
+  else for (let k = 0; k < 14; k++) { const m = (lo + hi) / 2; if (alturaEm(m) <= H) lo = m; else hi = m; }
+  const W = Math.min(maxW, innerWidth / lo);
+  w.style.width = W + 'px';
+  w.style.transformOrigin = '0 0';
+  w.style.transform = 'scale(' + lo.toFixed(4) + ')';
+  w.style.marginLeft = Math.max(0, (innerWidth - W * lo) / 2) + 'px';
+  w.style.marginRight = '0';
+  ESCALA = lo;
+  debug();
+}
+// ?debug=1 mostra o tamanho que o navegador informa (útil para ajustar na TV)
+function debug(){
+  if (!params.get('debug')) return;
+  let d = document.getElementById('debug');
+  if (!d) { d = document.createElement('div'); d.id = 'debug'; document.body.appendChild(d); }
+  d.textContent = `tela ${innerWidth}×${innerHeight} · dpr ${window.devicePixelRatio} · escala ${ESCALA.toFixed(3)} · modo ${document.body.classList.contains('tv') ? 'TV' : 'normal'}`;
+}
+
+let ultimo = null;
+// Se alguma fonte falhar numa atualização, continua mostrando o último valor bom (em vez de "—").
+// Fica guardado neste aparelho por até 3 dias, para sobreviver a um recarregamento da TV.
+const MEMORIA = 'kikos-ultimo-bom', MEMORIA_MAX = 3*864e5;
+function completar(d){
+  let antes = ultimo;
+  if(!antes){ try{ const m = JSON.parse(localStorage.getItem(MEMORIA) || 'null'); if(m && Date.now() - m.atualizado < MEMORIA_MAX) antes = m; }catch(e){} }
+  if(antes){
+    for (const k of ['dolar','euro','selic','cdi','ibov','nasdaq','sp500']) if(!d[k] && antes[k]) d[k] = antes[k];
+    d.itens = (d.itens||[]).map(i => i.erro ? ((antes.itens||[]).find(a => a.id===i.id && !a.erro) || i) : i);
+    if((!d.boiEstados || d.boiEstados.erro) && antes.boiEstados && !antes.boiEstados.erro) d.boiEstados = antes.boiEstados;
+    const tem = new Set((d.b3||[]).map(c => c.id)), ordem = ['boi','milho','soja','etanol'];
+    d.b3 = [...(d.b3||[]), ...(antes.b3||[]).filter(c => !tem.has(c.id))]
+      .sort((x,y) => ordem.indexOf(x.id) - ordem.indexOf(y.id));
+  }
+  try{ localStorage.setItem(MEMORIA, JSON.stringify(d)); }catch(e){}
+  return d;
+}
+// ---------- atualização automática ----------
+// Busca dados novos a cada 15 min sem precisar recarregar a página. Em vez de confiar só num timer
+// (que a TV pausa no descanso de tela), confere o relógio a cada 20 s e busca assim que passar da hora.
+const INTERVALO = 15*60*1000, TENTAR_DE_NOVO = 60*1000, RECARREGAR_APOS = 12*3600*1000;
+const abertoEm = Date.now();
+let proxima = 0, buscando = false, versao = null;
+async function carregar(){
+  if (buscando) return;
+  buscando = true;
+  try{
+    const r = await fetch('/api/cotacoes?t=' + Math.floor(Date.now()/60000), {cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d = await r.json();
+    // publicou versão nova no Vercel, ou a página está aberta há muito tempo: recarrega a tela inteira
+    // (só depois de uma busca bem-sucedida, para nunca recarregar sem internet)
+    if ((versao && d.versao && d.versao !== versao) || Date.now() - abertoEm > RECARREGAR_APOS) { location.reload(); return; }
+    versao = versao || d.versao || null;
+    ultimo = completar(d);
+    render(ultimo); encaixar(); render(ultimo); encaixar();   // redesenha os gráficos na escala final e reencaixa
+    proxima = Date.now() + INTERVALO;
+  }catch(e){
+    document.getElementById('dot').className = 'dot off';
+    document.getElementById('atual').textContent = 'Sem conexão — tentando de novo';
+    proxima = Date.now() + TENTAR_DE_NOVO;
+  }finally{
+    buscando = false;
+  }
+}
+const seVencido = () => { if (Date.now() >= proxima) carregar(); };
+carregar();
+setInterval(seVencido, 20*1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) seVencido(); });
+addEventListener('online', carregar);
+addEventListener('pageshow', seVencido);
+
+// relógio e data no cabeçalho
+function relogio(){
+  const n = new Date();
+  document.getElementById('relogio').innerHTML = n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) +
+    '<small>:' + String(n.getSeconds()).padStart(2,'0') + '</small>';
+  const dia = n.toLocaleDateString('pt-BR',{weekday:'long', day:'2-digit', month:'2-digit', year:'numeric'});
+  document.getElementById('hoje').textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
+}
+relogio(); setInterval(relogio, 1000);
+let rz; addEventListener('resize', ()=>{ clearTimeout(rz); rz = setTimeout(()=>{ encaixar(); ultimo && render(ultimo); }, 150); });
+encaixar();
+</script>
+</body>
+</html>
